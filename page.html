@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Image Grabber</title>
+    <link href="/page.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div class="header">
+      <div>
+        <input type="checkbox" id="selectAll" checked />&nbsp;
+        <span>Select all</span>
+      </div>
+      <span class="title">Image Grabber</span>
+      <div>
+        <button id="downloadBtn">Download</button>
+        <button id="downloadPDFBtn">Download PDF</button>
+      </div>
+    </div>
+    <div class="container"></div>
+    <script type="module" src="/node_modules/jspdf/dist/jspdf.umd.min.js"></script>
+    <!-- <script src="node_modules/canvg/dist/canvg.min.js"></script> -->
+    <script src="/lib/jszip.min.js"></script>
+    <script src="/page.js"></script>
+  </body>
+</html>
