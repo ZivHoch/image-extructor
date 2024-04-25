@@ -20,6 +20,13 @@ To install the Image Extractor Chrome Extension, follow these steps:
 4. Click on **Load unpacked** and select the directory where you cloned/downloaded the repository.
 5. The extension should now be installed and visible in your Chrome toolbar.
 
+## Dependencies
+
+This extension relies on the following dependencies:
+
+- [Canvg](https://github.com/canvg/canvg): A library for rendering SVG graphics in HTML5 Canvas.
+- [jsPDF](https://github.com/parallax/jsPDF): A library for generating PDF files in JavaScript.
+
 ## Usage
 
 1. Navigate to a webpage containing images you want to extract.
