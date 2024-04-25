@@ -1,5 +1,7 @@
+var title = "images";
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  addImagesToContainer(message);
+  addImagesToContainer(message.urls);
+  title = message.title;
   sendResponse("OK");
 });
 
@@ -88,7 +90,8 @@ function checkAndGetFileName(index, blob) {
 
 function downloadArchive(archive) {
   const url = URL.createObjectURL(archive);
-  chrome.downloads.download({ url, filename: "images.zip", saveAs: false }, () => URL.revokeObjectURL(url));
+  file_name = title + ".zip";
+  chrome.downloads.download({ url, filename: file_name, saveAs: false }, () => URL.revokeObjectURL(url));
 }
 
 async function createPdfFromImages(urls) {

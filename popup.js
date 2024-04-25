@@ -24,19 +24,19 @@ function execScript(tab) {
   chrome.scripting.executeScript(
     {
       target: { tabId: tab.id, allFrames: true },
-      function: grabImages,
+      function: grabData,
     },
     onResult
   );
 }
 
 /**
- * Executed on a remote browser page to grab all images
- * and return their URLs
+ * Executed on a remote browser page to grab all images and title
+ * and return their URLs and title
  *
- * @returns {Array} Array of image URLs
+ * @returns {Object} Object containing image URLs and title
  */
-function grabImages() {
+function grabData() {
   const images = document.querySelectorAll("img");
   const specificSizeImages = Array.from(images).filter((image) => {
     // Define the specific width and height criteria
@@ -45,37 +45,37 @@ function grabImages() {
     // Check if the image matches the specific size criteria
     return image.width >= specificWidth && image.height >= specificHeight;
   });
-  // Return the src of images that match the specific size criteria
-  return specificSizeImages.map((image) => image.src);
+  // Get the title from the meta tag
+  const titleMetaTag = document.querySelector('meta[name="twitter:title"]');
+  const title = titleMetaTag ? titleMetaTag.getAttribute("content") : "Untitled";
+
+  // Return the src of images that match the specific size criteria and the title
+  return { images: specificSizeImages.map((image) => image.src), title: title };
 }
 
 /**
- * Executed after all grabImages() calls finished on
- * remote page
- * Combines results and copy a list of image URLs
- * to clipboard
+ * Executed after grabData() call finished on remote page
+ * Combines results and opens a new tab to display UI
  *
- * @param {Array} frames - Array of grabImage() function execution results
+ * @param {Array} frames - Array of grabData() function execution results
  */
 function onResult(frames) {
-  // If script execution failed on remote end
-  // and could not return results
+  // If script execution failed on remote end and could not return results
   if (!frames || !frames.length) {
-    alert("Could not retrieve images from specified page");
+    alert("Could not retrieve data from specified page");
     return;
   }
-  // Combine arrays of image URLs from
-  // each frame to a single array
-  const imageUrls = frames.map((frame) => frame.result).flat();
-  openImagesPage(imageUrls);
+  // Get the data from the first frame (assuming it's the main frame)
+  const { images, title } = frames[0].result;
+  openImagesPage(images, title);
 }
-function openImagesPage(urls) {
-  // TODO:
-  // * Open a new tab with a HTML page to display an UI
+
+function openImagesPage(urls, title) {
+  // Open a new tab with a HTML page to display an UI
   chrome.tabs.create({ url: "page.html", active: false }, (tab) => {
-    // * Send `urls` array to this page
+    // Send `urls` array and `title` to this page
     setTimeout(() => {
-      chrome.tabs.sendMessage(tab.id, urls, (resp) => {
+      chrome.tabs.sendMessage(tab.id, { urls: urls, title: title }, (resp) => {
         chrome.tabs.update(tab.id, { active: true });
       });
     }, 500);
