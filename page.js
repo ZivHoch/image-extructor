@@ -1,9 +1,22 @@
 var title = "images";
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.title) {
+    title = sanitizedFileName = sanitizeFileName(message.title);
+    const container = document.querySelector(".container");
+    const h1 = document.createElement("h1");
+    h1.innerHTML = title;
+    container.appendChild(h1);
+  }
   addImagesToContainer(message.urls);
-  title = message.title;
+
   sendResponse("OK");
 });
+function sanitizeFileName(fileName) {
+  // Replace invalid characters with underscores or remove them
+  return fileName.replace(/[<>:"/\\|?*\x00-\x1F]/g, "");
+}
+
+// Example usage:
 
 function addImagesToContainer(urls) {
   const container = document.querySelector(".container");

@@ -3,7 +3,18 @@ body {
   padding: 0;
   background-color: #ffffff;
 }
-
+h1 {
+  width: 100%;
+  position: relative;
+  top: 100%; /* Position it below the header */
+  padding: 10px;
+  margin-top: 10px; /* Add margin to create space between header and h1 */
+  color: #fff;
+  text-align: center;
+  background: linear-gradient(#5bc4bc, #01a9e1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow for better contrast */
+  z-index: 1000; /* Ensure it appears above other content */
+}
 .header {
   display: flex;
   justify-content: space-between;
