@@ -13,7 +13,7 @@ h1 {
   text-align: center;
   background: linear-gradient(#5bc4bc, #01a9e1);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow for better contrast */
-  z-index: 1000; /* Ensure it appears above other content */
+  z-index: 99; /* Ensure it appears above other content */
 }
 .header {
   display: flex;
